@@ -1,0 +1,4 @@
+include ':ormlite-core-5.1'
+include ':ormlite-android-5.1'
+include ':app'
+rootProject.name = "ORMLiteTests"
