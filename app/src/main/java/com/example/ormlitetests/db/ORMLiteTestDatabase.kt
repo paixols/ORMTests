@@ -9,7 +9,7 @@ import com.j256.ormlite.support.ConnectionSource
 import com.j256.ormlite.table.TableUtils
 import java.sql.SQLException
 
-class Database(
+class ORMLiteTestDatabase(
     context: Context,
     dbName: String,
     cursorFactory: SQLiteDatabase.CursorFactory?,

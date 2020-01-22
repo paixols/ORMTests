@@ -1,7 +1,8 @@
 package com.example.ormlitetests.db.managers
 
 import android.content.Context
-import com.example.ormlitetests.db.Database
+import com.example.ormlitetests.BuildConfig
+import com.example.ormlitetests.db.ORMLiteTestDatabase
 import com.example.ormlitetests.db.connectors.DatabaseConnector
 import com.j256.ormlite.dao.Dao
 import java.sql.SQLException
@@ -10,9 +11,7 @@ class DatabaseManager {
 
     private lateinit var databaseConnector: DatabaseConnector
     private var tablesMap = hashMapOf<Class<*>, Dao<*, Int>>()
-    private lateinit var database: Database
-    private val dbName: String = "dbTests_1"
-    private val dbVersion: Int = 1
+    private lateinit var ORMLiteTestDatabase: ORMLiteTestDatabase
 
     object Holder {
         val instance: DatabaseManager =
@@ -29,22 +28,22 @@ class DatabaseManager {
 
     fun getDatabase(
         context: Context
-    ): Database {
-        if (!::database.isInitialized) {
-            database = Database(
+    ): ORMLiteTestDatabase {
+        if (!::ORMLiteTestDatabase.isInitialized) {
+            ORMLiteTestDatabase = ORMLiteTestDatabase(
                 context = context,
-                dbName = this.dbName,
+                dbName = BuildConfig.DB_NAME,
                 cursorFactory = null,
-                databaseVersion = this.dbVersion
+                databaseVersion = BuildConfig.VERSION_CODE
             )
         }
-        return database
+        return ORMLiteTestDatabase
     }
 
     @Throws(SQLException::class)
     fun <T> createOrGetDaoThrowable(clazz: Class<*>): Dao<*, Int> {
         return if (!tablesMap.containsKey(clazz)) {
-            val dao: Dao<T, Int> = database.getDao(clazz) as Dao<T, Int>
+            val dao: Dao<T, Int> = ORMLiteTestDatabase.getDao(clazz) as Dao<T, Int>
             tablesMap[clazz] = dao
             dao as Dao<*, Int>
         } else {
